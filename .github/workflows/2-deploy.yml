@@ -7,6 +7,8 @@ on:
     workflows: ["CI - Linting"]
     types:
       - completed
+    conclusion:
+      - success
 
 permissions:
   contents: write
@@ -14,9 +16,9 @@ permissions:
   id-token: write
 
 jobs:
-  prod-1:
+  pages:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -27,3 +29,14 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
+
+  webserver:
+    runs-on: self-hosted
+    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Push to the prod server
+        run: |
+          sudo cp -r . /var/www/html
