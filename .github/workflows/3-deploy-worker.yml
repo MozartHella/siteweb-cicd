@@ -1,8 +1,6 @@
 name: CD - Deploy on prod webserver
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_run:
     workflows: ["CI - Linting"]
     types:
