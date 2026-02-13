@@ -1,0 +1,17 @@
+name: CD - Deploy on prod webserver
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  prod-2:
+    runs-on: self-hosted
+    needs: prod-1
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+
+      - name: Push to the prod server
+        run: |
+          sudo cp -r . /var/www/html
